@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "type": "module",
   "dependencies": {
-    "axios": "^0.27.2",
-    "jsdom": "^20.0.0"
+    "jsdom": "^22.1.0"
   }
 }

@@ -1,27 +1,30 @@
-const axios = require('axios').default;
-const jsdom = require("jsdom");
+import jsdom from 'jsdom'
+import { DIR } from './utils/constants.js'
+// import { parseLaVozDeGalicia } from './parsers/laVozDeGalicia.js'
+import ElCorreoGallego from './parsers/elCorreoGallego.js'
 
 const { JSDOM } = jsdom;
 
-const { MEDIUM, URL } = require('./utils/constants')
-
-const parseLaVozDeGalicia = require('./parsers/laVozDeGalicia')
-const parseElCorreoGallego = require('./parsers/elCorreoGallego')
-
-
 const getContent = (url) => {
-	return axios({
-		method: 'get',
-		url: url,
-		responseType: 'document'
-	})
-	.then( res => {
-		return new JSDOM(res.data).window.document
-	})
+	return fetch(url)
+		.then(res => res.text())
+		.then(text => {
+			return new JSDOM(text).window.document
+		})
 }
 
+const elCorreoDubra = new URL(DIR.elCorreoGallego.council, DIR.elCorreoGallego.base)
 
-const aaa = getContent(URL.elCorreoGallego.mainPage)
-				.then( doc => parseElCorreoGallego(doc) )
-				.then( arr => console.log(arr) )
+
+const aaa = getContent(elCorreoDubra.href)
+				.then( doc => ElCorreoGallego.parseList(doc) )
+				.then( arr => {
+					for (const noticia of arr) {
+						const data = getContent(noticia.href)
+						.then( doc => ElCorreoGallego.parseSingle(doc, noticia.href, noticia.id) )
+						.then( item => {
+							console.log(item);
+						})
+					}
+				} )
 

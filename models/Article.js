@@ -1,16 +1,14 @@
-const crypto = require('crypto')
+import createUuid from '../utils/createId.js'
 
-class Article {
-	constructor({ medium, title, excerpt, url, date, featuredImg, premium }) {
-		this.id = crypto.createHash('sha256', url).digest('hex')
+export default class Article {
+	constructor({ id, medium, title, excerpt, url, date, content, premium = false }) {
+		this.id = id || createUuid(url)
 		this.medium = medium
 		this.title = title
-		this.url = url
-		this.date = date ? date.toLocaleString('es-ES', {
-			timeZone: 'Europe/Madrid',
-		}) : undefined
 		this.excerpt = excerpt
-		this.featuredImg = featuredImg
+		this.url = url
+		this.date = date 
+		this.content = content
 		this.premium = premium
 	}
 
@@ -22,10 +20,8 @@ class Article {
 			url: this.url,
 			date: this.date,
 			excerpt: this.excerpt,
-			featuredImg: this.featuredImg,
-			premium: this.premium
+			content: this.content,
+			premium: this.premium,
 		}
 	};
 }
-
-module.exports = Article

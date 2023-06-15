@@ -1,15 +1,13 @@
-const MEDIUM = {
-	laVozDeGalicia: 'la-voz-de-galicia',
-	elCorreoGallego: 'el-correo-gallego',
-}
 
-const URL = {
-	laVozDeGalicia: {
-		mainPage: 'https://www.lavozdegalicia.es/santiago/val-do-dubra/2'
-	},
+const DIR = {
 	elCorreoGallego: {
-		mainPage: 'https://www.elcorreogallego.es/noticias/-/meta/val-do-dubra'
+		base: "https://www.elcorreogallego.es",
+		council: "/compostela/val-do-dubra"
 	},
+	laVozDeGalicia: {
+		base: "https://www.lavozdegalicia.es",
+		council: "/santiago/val-do-dubra",
+	}
 }
 
-module.exports = { MEDIUM, URL }
+export { DIR }
