@@ -13,18 +13,26 @@ const getContent = (url) => {
 		})
 }
 
-const elCorreoDubra = new URL(DIR.elCorreoGallego.council, DIR.elCorreoGallego.base)
 
+const mediums = [
+	ElCorreoGallego
+]
 
-const aaa = getContent(elCorreoDubra.href)
-				.then( doc => ElCorreoGallego.parseList(doc) )
+mediums.forEach(Medium => {
+	const myMedium = new Medium()
+
+	const aaa = getContent(myMedium.url.href)
+				.then( doc => myMedium.parseList(doc) )
 				.then( arr => {
 					for (const noticia of arr) {
 						const data = getContent(noticia.href)
-						.then( doc => ElCorreoGallego.parseSingle(doc, noticia.href, noticia.id) )
+						.then( doc => myMedium.parseSingle(doc, noticia.href, noticia.id) )
 						.then( item => {
 							console.log(item);
 						})
 					}
 				} )
+});
+
+
 

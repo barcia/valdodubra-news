@@ -6,9 +6,10 @@ import { shortYearToFull } from '../lib/utils.js'
 
 class ElCorreoGallego {
 	constructor() {
+		this.url = new URL(DIR.elCorreoGallego.council, DIR.elCorreoGallego.base)
 	}
 
-	static parseList(doc) {
+	parseList(doc) {
 		const articles = Array.from(doc.querySelectorAll('.opening article[itemtype="https://schema.org/NewsArticle"], .list article[itemtype="https://schema.org/NewsArticle"]'))
 
 		if (articles.length > 0) {
@@ -24,8 +25,8 @@ class ElCorreoGallego {
 		}
 	}
 
-	static parseSingle(doc, href, id) {
-		const date = ElCorreoGallego.parseDate(doc.querySelector('.article-author__date').textContent.trim(), doc.querySelector('.article-author__hour').textContent.trim())
+	parseSingle(doc, href, id) {
+		const date = this.parseDate(doc.querySelector('.article-author__date').textContent.trim(), doc.querySelector('.article-author__hour').textContent.trim())
 		const title = doc.querySelector('.headline-article h1').textContent
 		const excerpt =  doc.querySelector('.headline-article h2')?.textContent.replace(/^\s+|\s+$/g, '');
 		const paragraphs = Array.from(doc.querySelectorAll('p.article-body__text'))
@@ -44,7 +45,7 @@ class ElCorreoGallego {
 		}).toJson()
 	}
 
-	static parseDate(dateString, hourString) {
+	parseDate(dateString, hourString) {
 		const dateParts = dateString.split('·'); // Divide la cadena en partes separadas por el caracter '·'
 		const hourParts = hourString.split(':'); // Divide la cadena en partes separadas por el caracter '·'
 	
